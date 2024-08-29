@@ -12,6 +12,6 @@
     "grammy": "^1.29.0"
   },
   "scripts": {
-    "prod": "npx tsc telegram.ts && npx pm2 start telegram.js"
+    "prod": "tsc telegram.ts && pm2 start telegram.js"
   }
 }
