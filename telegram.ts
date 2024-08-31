@@ -1,4 +1,4 @@
-const { Bot, Keyboard, InlineKeyboard } = require('grammy');
+const { Bot, Keyboard, InlineKeyboard, GrammyError, HttpError } = require('grammy');
 const axios = require('axios')
 require('dotenv').config()
 
@@ -7,6 +7,7 @@ const bot = new Bot(process.env.BOT_API_KEY);
 bot.start();
 
 bot.command('start', async (ctx) => {
+
     const startKeyboard = new Keyboard()
         .text('Спиздить картинку')
         .text('Сьебаться с бота')
@@ -67,4 +68,14 @@ bot.callbackQuery('button-4', async (ctx) => {
     const photo = await getPhoto('monkeys')
     await ctx.replyWithAnimation(photo)
     await ctx.answerCallbackQuery()
+});
+
+bot.catch(({ error: e }) => {
+    if (e instanceof GrammyError) {
+        console.error("Error in request:", e.description);
+    } else if (e instanceof HttpError) {
+        console.error("Could not contact Telegram:", e);
+    } else {
+        console.error("Unknown error:", e);
+    }
 });
